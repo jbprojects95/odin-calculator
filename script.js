@@ -1,6 +1,7 @@
 let firstNumber;
 let secondNumber;
 let operator;
+let total;
 
 const warning = "Type a valid operator";
 
@@ -20,16 +21,20 @@ const divide = (a, b) => {
   return a / b;
 };
 
-function operate(op) {
+function calculate(op, firstNumber, secondNumber) {
   switch (op) {
     case "+":
-      return add(firstNumber, secondNumber);
+      total = add(firstNumber, secondNumber);
+      return total;
     case "-":
-      return subtract(firstNumber, secondNumber);
+      total = subtract(firstNumber, secondNumber);
+      return total;
     case "*":
-      return multiply(firstNumber, secondNumber);
+      total = multiply(firstNumber, secondNumber);
+      return total;
     case "/":
-      return divide(firstNumber, secondNumber);
+      total = divide(firstNumber, secondNumber);
+      return total;
   }
 }
 
@@ -38,46 +43,51 @@ const clearScreen = () => {
 };
 
 const deleteDisplayValue = () => {
-  displayValue.length = 0;
+  displayValue = "";
 };
+
+// const processDisplayValue = (display) => {
+//   const numbers = display.split(/\D/g);
+//   const op = display.split(/\d/g).filter(Boolean);
+//   const indexed = op.indexOf("=");
+//   op.splice(indexed);
+
+//   firstNumber = Number(numbers[0]);
+//   secondNumber = Number(numbers[1]);
+//   operator = op.join("");
+
+//   return firstNumber, secondNumber, operator;
+// };
 
 const numSelect = document.querySelectorAll(".btn");
 const calcScreen = document.querySelector(".calc-screen");
-let displayValue = [];
-const numberValues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 const ops = ["+", "-", "*", "/"];
+const num = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+let displayValue = "";
 
 numSelect.forEach((button) => {
   button.addEventListener("click", () => {
-    if (numberValues.includes(button.value)) {
-      displayValue.push(Number(button.value));
-    } else {
-      displayValue.push(button.value);
-    }
-    calcScreen.textContent = displayValue.join("");
-    console.log(displayValue);
+    const numBtn = num.includes(button.value);
+    const opBtn = ops.includes(button.value);
+    const clearBtn = button.value === "c";
+    const calcBtn = button.value === "=";
 
-    if (button.value === "c") {
-      clearScreen();
-      deleteDisplayValue();
+    if (numBtn) {
+      displayValue += button.value;
+      calcScreen.textContent = displayValue;
+      console.log("Number button pressed");
     }
 
-    if (button.value === "=") {
-      const indexOfEqual = displayValue.indexOf("=");
-      displayValue.splice(indexOfEqual);
-      for (const element of displayValue) {
-        if (typeof element !== "number") {
-          const indexed = displayValue.indexOf(element);
-          operator = [element];
-          firstNumber = Number(displayValue.slice(0, indexed).join(""));
-          secondNumber = Number(displayValue.slice(indexed + 1).join(""));
-          operator = operator.join("");
-        }
-      }
-      //put calculate function here
-      console.log(firstNumber);
-      console.log(secondNumber);
-      console.log(operator);
+    if (opBtn) {
+      console.log("Operator pressed");
+    }
+
+    if (clearBtn) {
+      console.log("Clear button pressed");
+    }
+
+    if (calcBtn) {
+      console.log("Calculate button pressed");
     }
   });
 });
