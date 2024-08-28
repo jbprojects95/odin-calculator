@@ -26,19 +26,8 @@
   justify-content: center;
   align-content: center;
   width: 100%;
+  margin: 10px;
 }
-
-/* .calc-num-btns,
-.calc-op-btns {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 2px;
-  margin: 10px auto 0 auto;
-  width: 130px;
-} */
 
 .btn-container {
   display: flex;
@@ -60,6 +49,8 @@
 }
 
 .calc-num-btns {
+  /* display: grid;
+  grid-template-columns: 33.33% 33.33% 33.33%; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,5 +68,4 @@
   width: 38px;
   padding: 10px;
   flex: 1 1 auto;
-  /* border-radius: 10px; */
 }
