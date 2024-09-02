@@ -13,14 +13,6 @@ function calculate(op, firstNumber, secondNumber) {
   }
 }
 
-const clearScreen = () => {
-  calcScreen.textContent = "";
-};
-
-const deleteDisplayValue = () => {
-  displayValue = "";
-};
-
 const calculator = document.querySelector(".calculator");
 const numSelect = document.querySelectorAll(".btn");
 const calcScreen = document.querySelector(".calc-screen");
@@ -29,7 +21,7 @@ const num = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 let displayValue = "";
 
 numSelect.forEach((button) => {
-  button.addEventListener("click", () => {
+  button.addEventListener("click", (e) => {
     const numBtn = num.includes(button.value);
     const opBtn = ops.includes(button.value);
     const decimalBtn = button.value === ".";
@@ -37,10 +29,12 @@ numSelect.forEach((button) => {
     const calcBtn = button.value === "=";
     const btnContent = button.value;
     const bckBtn = button.value === "bkspc";
+    const key = e.target;
     let total;
 
     if (numBtn) {
       if (calcScreen.textContent === "0" || lastValue === "operator") {
+        //checks to see if last value is operator, if it is we replace to previous number with clicked number
         displayValue = btnContent;
         lastValue = "number";
       } else {
@@ -50,7 +44,7 @@ numSelect.forEach((button) => {
     }
 
     if (bckBtn && lastValue !== "calculate") {
-      console.log("DELETED PRESSED!");
+      //checks to make sure that the user isn't deleting a result from calculation
       displayValue = calcScreen.textContent.slice(0, -1);
       calcScreen.textContent = displayValue;
     }
@@ -58,20 +52,23 @@ numSelect.forEach((button) => {
     if (decimalBtn) {
       if (!displayValue.includes(".")) {
         calcScreen.textContent = displayValue += ".";
-      } else if (lastValue === "operator") {
-        calcScreen.textContent = "0.";
       }
       lastValue = "decimal";
     }
 
     if (opBtn) {
+      numSelect.forEach((btn) => btn.classList.remove("pressed"));
+
+      key.classList.add("pressed");
+      console.log(key.classList.contains("pressed"));
+
       const firstValue = calculator.dataset.firstValue;
       const operator = calculator.dataset.operator;
       const secondValue = displayValue;
 
       if (firstValue && operator && lastValue !== "operator") {
         total = calculate(operator, firstValue, secondValue);
-        calcScreen.textContent = total;
+        calcScreen.textContent = total.toFixed(5);
         calculator.dataset.firstValue = total;
       } else {
         calculator.dataset.firstValue = displayValue;
@@ -87,19 +84,17 @@ numSelect.forEach((button) => {
       calculator.dataset.secondValue = "";
       calcScreen.textContent = "0";
       lastValue = ""; // Optional, if you need to reset this as well.
-      console.log("Clear button pressed");
-      console.log(`FIRST: ${calculator.dataset.firstValue}`);
-      console.log(`SECOND: ${calculator.dataset.secondValue}`);
-      console.log(calculator.dataset.operator);
+      numSelect.forEach((btn) => btn.classList.remove("pressed"));
     }
 
     if (calcBtn) {
+      numSelect.forEach((btn) => btn.classList.remove("pressed"));
       firstValue = calculator.dataset.firstValue;
       operator = calculator.dataset.operator;
       secondValue = displayValue;
 
       total = calculate(operator, firstValue, secondValue);
-      calcScreen.textContent = total;
+      calcScreen.textContent = total.toFixed(5);
 
       if ((!firstValue && !operator) || !secondValue) {
         calcScreen.textContent = "0";
